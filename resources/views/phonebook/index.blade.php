@@ -9,12 +9,15 @@
 
     <title>Phonebook</title>
     <style>
+        a{
+            text-decoration: none;
+        }
         .item-list li{
             background: #CF9FFF;
             text-decoration: none;
             list-style-type: none;
             color:white;
-            padding:5px; 
+            padding-left:5px; 
             border-left: 10px solid #581845;
             margin-bottom:2px;
         }
@@ -34,24 +37,49 @@
         <div class="row ">
             <div class="col-6">
                 <div class="card">
+                    <h3>Phone Book</h3>
                     <div class="item-input ">
                         <form action="{{route('addphonebook')}}" method="post" class="d-flex">
                             @csrf
-                            <input type="text"  name="phone" class="item-input">
-                            <button class="btn-sm" type="submit">Submit</button>
+                            <select name="person_id" id class="form-control">
+                                <option value="" >Selece Person</option>
+                               @foreach ($persons as $person)
+                                    <option value="{{$person->id}}" class="form-control">{{$person->name}}</option>
+                               @endforeach 
+                            </select>
+                            <select name="type" id class="form-control">
+                                <option value="" >Selece Type</option>
+                                <option value="1" class="form-control">Home</option>
+                                <option value="2" class="form-control">Office</option>
+                                <option value="3" class="form-control">Personal</option>
+                            </select>
+                            <input type="text"  name="phone" class="form-control" placeholder="Enter Phone Number">
+                            <button class="btn-sm btn-info" type="submit">Add +</button>
                         </form>    
                     </div>
                     <div class=item-list>
-                        <ul>
+                        <table class="table table-bordered">
+
+                            <tr>
+                                <th>SL</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Type</th>
+                            </tr>
+                        
                             @foreach ($phonebooklist as $phonebook)
-                                
-                                <li class="d-flex"><h4 class="float-start mx-5">{{$phonebook->phone}} </h4>
-                                    <a href="{{route('deletephonebook',$phonebook->id)}}" class=" btn-sm  btn-danger ">Delete</a>
-                                    <a class="btn-sm btn-info">eddit</a>
-                                </li>
+                                <tr>   
+                                    <td>{{$loop->index+1}}</td>
+                                    <td>{{$phonebook->person->name}}</td>
+                                    <td>{{$phonebook->person->email}}</td>
+                                    <td>{{$phonebook->phone}}</td>
+                                    <td>{{$phonebook->type}}</td>
+
+                                </tr>
                             @endforeach
                             
-                        </ul>
+                        </table>
                     </div>
                  </div>   
             </div>

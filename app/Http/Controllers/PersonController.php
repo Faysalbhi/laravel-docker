@@ -3,28 +3,22 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Services\Phonebookservices;
 use App\Services\Personservices;
 
-
-class PhonebookController extends Controller
+class PersonController extends Controller
 {
-    public $phonebookservice;
     public $personservice;
 
-    public function __construct(Phonebookservices $phonebookservice,Personservices $personservice)
+    public function __construct(PersonServices $personservice)
     {
-        $this->phonebookservice=$phonebookservice;
         $this->personservice=$personservice;
     }
 
 
     public function index()
     {
-        $phonebooklist = $this->phonebookservice->phonebookList();
         $personlist = $this->personservice->personList();
-        return view('phonebook.index',[
-            'phonebooklist'=>$phonebooklist,
+        return view('person.index',[
             'persons'=>$personlist
         ]);
 
@@ -33,7 +27,7 @@ class PhonebookController extends Controller
 
     public function insert(Request $request)
     {
-        $insertid = $this->phonebookservice->addPhonebook($request);
+        $insertid = $this->personservice->addPerson($request);
         return back()->with('insertid',$insertid);
     }
     
@@ -47,7 +41,7 @@ class PhonebookController extends Controller
 
     public function delete($id)
     {
-        $result = $this->phonebookservice->deletePhonebook($id);
+        $result = $this->personservice->deletePerson($id);
         return back();
     }
 

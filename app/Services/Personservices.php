@@ -2,15 +2,15 @@
 
 namespace App\services;
 
-use App\Models\Phonebook;
+use App\Models\Person;
 
-class Phonebookservices {
+class Personservices {
 
-    public function phonebookList()
+    public function personList()
     {
         try{
 
-            $result = Phonebook::all();
+            $result = Person::all();
             if ($result) {
                 return $result;
 
@@ -24,14 +24,13 @@ class Phonebookservices {
         }
     }
 
-    public function addPhonebook($data)
+    public function addPerson($data)
     {
         try{
             
-            $result = Phonebook::insertGetId([
-                'phone'=>$data->phone,
-                'person_id'=>$data->person_id,
-                'type'=>$data->type
+            $result = Person::insertGetId([
+                'name'=>$data->name,
+                'email'=>$data->email,
             ]);
 
             if ($result) {
@@ -70,12 +69,12 @@ class Phonebookservices {
     }
 
 
-    public function deletePhonebook($id)
+    public function deletePerson($id)
     {
         
         try{
             
-            $result=Phonebook::where('id',$id)->delete();
+            $result=Person::where('id',$id)->delete();
 
             if ($result) {
                 return "success";
@@ -92,6 +91,5 @@ class Phonebookservices {
         
 
     }
-  
 
 }

@@ -4,15 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Person;
+use App\Models\Phonebook;
 
-class Phonebook extends Model
+class Person extends Model
 {
     use HasFactory;
     protected $guarded=['id'];
 
-    public function person(){
-
-        return $this->belongsTo(Person::class);
+    public function phonebook()
+    {
+        return $this->hasMany(Phonebook::class,'person_id');
     }
 }
