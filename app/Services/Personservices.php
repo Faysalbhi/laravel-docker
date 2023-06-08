@@ -3,6 +3,7 @@
 namespace App\services;
 
 use App\Models\Person;
+use DB;
 
 class Personservices {
 
@@ -43,16 +44,25 @@ class Personservices {
         }catch(\Exception $e){
             \Log::info("Error Whene Phonebook trying to insert: ".$e->getMessage());
             echo "<h3 style='text-align:center;color:red'>Something went wrong.Please Contact with Developer</h3>";
+            return "Faild";
         }
     }
 
-    public function updatePhonebook($id,$phone)
+    public function showPerson($id)
+    {
+
+        $person=Person::find($id);
+        return $person;
+    }
+
+    public function updatePerson($id,$data)
     {
 
         try{
 
-            $result=Phonebook::where('id',$id)->update([
-                'phone'=>$phone
+            $result=Person::where('id',$id)->update([
+                'name'=>$data->name,
+                'email'=>$data->email,
             ]);
 
             if ($result) {
@@ -67,6 +77,7 @@ class Personservices {
             echo "<h3 style='text-align:center;color:red'>Something went wrong.Please Contact with Developer</h3>";
         }
     }
+
 
 
     public function deletePerson($id)

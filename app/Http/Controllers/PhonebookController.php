@@ -47,8 +47,17 @@ class PhonebookController extends Controller
 
     public function delete($id)
     {
-        $result = $this->phonebookservice->deletePhonebook($id);
-        return back();
+
+        DB::beginTransaction();
+        try{
+            $result = $this->phonebookservice->deletePhonebook($id);
+            DB::commit();
+        } catch (\Exception $e){
+            \Log::info($e->getMessage());
+            DB::rollback();
+            return false;
+        }
+        
     }
 
 }

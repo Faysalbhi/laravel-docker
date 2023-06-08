@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <title>Phonebook</title>
     <style>
         a{
@@ -28,6 +28,59 @@
             margin-left:10px;
             width: 100%;
         }
+        .contact{
+            margin-bottom: 5px;
+            box-sizing: border-box;
+            background: #eee;
+            box-shadow: 0 4px 4px -4px 
+        }
+        .person-details{
+            background: rgb(221, 211, 198);
+            padding-left: 5px;
+            padding-right: 5px;
+            border-radius: 5px 0 5px;
+            cursor: pointer;
+            box-sizing: border-box;
+            border-left: 5px solid blueviolet;
+            transition-duration: .5s;
+        }
+        .person-details:hover{
+            /* margin-left: 10px; */
+            border-left: 15px solid blueviolet;
+            border-radius: 0;
+        }
+        
+        .number-list{
+            display:none;
+            
+        }
+        .phonebook{
+            display: flex;
+            justify-content: space-around;
+
+        }
+        ul li {
+            list-style-type: none;
+           
+        }
+        ul li a{
+            padding: 2px;
+            color: rgb(197, 104, 104);
+            text-decoration: none;
+            transition-duration: .2s;
+            
+        }
+        ul li a:hover{
+            /* border-left: 4px solid rgb(140, 7, 180); */
+            text-decoration: none;
+            padding-left: 5px;
+            
+        }
+        .toster{
+            position: absolute;
+            top:100;
+            right: 200px;
+        }
      
     </style>
   </head>
@@ -35,41 +88,39 @@
     <div class="container">
         
         <div class="row ">
-            <div class="col-6">
-                <div class="card">
-                    <h3>Phone Book</h3>
-                    <div class="item-input ">
-                        <form action="{{route('addphonebook')}}" method="post" class="d-flex">
-                            @csrf
-                            <select name="person_id" id class="form-control">
-                                <option value="" >Selece Person</option>
-                              
-                            </select>
-                            <select name="type" id class="form-control">
-                                <option value="" >Selece Type</option>
-                                <option value="1" class="form-control">Home</option>
-                                <option value="2" class="form-control">Office</option>
-                                <option value="3" class="form-control">Personal</option>
-                            </select>
-                            <input type="text"  name="phone" class="form-control" placeholder="Enter Phone Number">
-                            <button class="btn-sm btn-info" type="submit">Add +</button>
-                        </form>    
-                    </div>
-                    <div class=item-list>
-                        <table class="table table-bordered">
+            <div class="col-md-6">
+                <div class="car d">
+                    <div class="card-header">Contact List</div>
+                    @if(Session::has('success'))
+                        <div class="toster"><p class="alert alert-info">{{ Session::get('success') }}</p></div>
+                    @endif
+                    <div class="card-body">
 
-                            <tr>
-                                <th>SL</th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Phone</th>
-                                <th>Type</th>
-                            </tr>
-                        
-                          
-                            
-                        </table>
+                        @foreach($personlist as $key=>$person)
+                            <div class="contact">
+                                <div class="person-details" onclick="showNumber('phone-{{$key}}')">
+                                    <p><span>{{$person->name}}</span></p>
+                                    <p><span>{{$person->email}}</span></p>
+                                </div>
+                                <div class="number-list" id="phone-{{$key}}">
+                                    <div class="phonebook">
+                                        <div class="number">
+                                            <ul>
+                                                @foreach($person->phonebook as $phonebook) 
+                                                    <li><a href="">{{$phonebook->phone}} </a> <span>{{ $phonebook->type}}</span></li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                        <div class="action">
+                                                <a href="{{route('contact.delete',$person->id)}}" class="btn-danger btn-sm btn"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                                <a  href="{{route('contact.edit',$person->id)}}" class="btn-success btn-sm btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
                     </div>
+
                  </div>   
             </div>
         </div>
@@ -81,6 +132,28 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" ></script>
 
+    <script>
+        var personDetails=document.getElementsByClassName('person-details');
+        var numberList=document.getElementsByClassName('number-list');
+       
+  
+
+
+
+        
+            function showNumber(id){
+                // $(phone-id).css('display','style');
+                // alert(id);
+                var phoneId=document.getElementById(id);
+                if (phoneId.style.display === "none") {
+                    phoneId.style.display = "block";
+                } else {
+                    phoneId.style.display = "none";
+                }
+            };
+          
+        
+    </script>
 
   </body>
 </html>

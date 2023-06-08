@@ -3,6 +3,7 @@
 namespace App\services;
 
 use App\Models\Phonebook;
+use DB;
 
 class Phonebookservices {
 
@@ -42,9 +43,17 @@ class Phonebookservices {
             }
 
         }catch(\Exception $e){
+            DB::rollback();
             \Log::info("Error Whene Phonebook trying to insert: ".$e->getMessage());
             echo "<h3 style='text-align:center;color:red'>Something went wrong.Please Contact with Developer</h3>";
+            return "faild";
         }
+    }
+
+    public function getPhonebook($id)
+    {
+        $result=Phonebook::where('person_id',$id)->get();
+        return $result;
     }
 
     public function updatePhonebook($id,$phone)
@@ -91,6 +100,21 @@ class Phonebookservices {
         }
         
 
+    }
+
+    public function deleteWithPersonId($id)
+    {
+
+        try{
+
+            Phonebook::where('person_id',$id)->delete();
+            return true;
+        } catch (\Exception $e){
+            \Log::info("Error Whene Phonebook trying to Delete with personID: ".$e->getMessage());
+            DB::rollback();
+            return false;
+        }
+        
     }
   
 

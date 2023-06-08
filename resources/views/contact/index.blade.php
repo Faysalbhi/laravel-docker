@@ -19,6 +19,7 @@
             max-width: 600px;
             padding: 5px;
         }
+
         .card-header{
             background: yellowgreen;
             height: 40px;
@@ -29,8 +30,18 @@
         #item{
             margin: 5px;
             border: none;
+        }.toster{
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 200px;
+        }
+        .name-email{
+            display: flex;
+            justify-content: space-around;
         }
         
+       
 
     </style>
     <title>Contact PhoneBook</title>
@@ -44,13 +55,19 @@
                 <div class="card">
 
                     <div class="card-header"><h3>Phonebook Contact</h3></div>
+                    @if(Session::has('status'))
+                        <div class="toster"><p class="alert alert-info">{{ Session::get('status') }}</p></div>
+                    @endif
+
                     <div class="card-body">
                         <div class="form">
                             <form action="{{route('contact.store')}}" method="POST">
                                 @csrf
     
-                                <div id="name" class="item"></div>
-                                <div id="email" class="item"></div>
+                                <div class="name-email">
+                                    <div id="name" class="item"></div>
+                                    <div id="email" class="item"></div>
+                                </div>
                                 <label for="phone">Phone:</label>
                                 <div id="phone" class="item"></div>
                                 <button type="submit">Submit</button>
@@ -89,7 +106,7 @@
         // email 
         $("#email").alpaca({
             "schema": {
-                "format": "text",
+                "format": "email",
                 "required": true
                 
             },

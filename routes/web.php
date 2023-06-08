@@ -26,3 +26,6 @@ Route::get('deleteperson/{id}',[PersonController::class,'delete'])->name('delete
 Route::get('addcontact',[ContactController::class,'index'])->name('add.contact');
 Route::get('showcontact',[ContactController::class,'show'])->name('showcontact');
 Route::post('contact/store',[ContactController::class,'store'])->name('contact.store');
+Route::get('contact/delete/{id}',[ContactController::class,'delete'])->name('contact.delete');
+Route::get('contact/edit/{id}',[ContactController::class,'edit'])->name('contact.edit');
+Route::post('contact/update/{id}',[ContactController::class,'update'])->name('contact.update');
