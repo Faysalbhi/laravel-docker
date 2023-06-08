@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PhonebookController;
 use App\Http\Controllers\PersonController;
+use App\Http\Controllers\ContactController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -20,3 +21,8 @@ Route::view('phonebook','phonebook.index');
 Route::get('personlist',[PersonController::class,'index']);
 Route::post('addperson',[PersonController::class,'insert'])->name('addperson');
 Route::get('deleteperson/{id}',[PersonController::class,'delete'])->name('deleteperson');
+
+// Contact Route 
+Route::get('addcontact',[ContactController::class,'index'])->name('add.contact');
+Route::get('showcontact',[ContactController::class,'show'])->name('showcontact');
+Route::post('contact/store',[ContactController::class,'store'])->name('contact.store');

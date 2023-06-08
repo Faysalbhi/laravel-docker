@@ -34,7 +34,7 @@ class Personservices {
             ]);
 
             if ($result) {
-                return "success";
+                return $result;
 
             } else {
                 return "fail";

@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('phonebooks', function (Blueprint $table) {
             $table->id();
-            $table->string('phone',16);
+            $table->string('phone',24);
+            $table->unsignedBiginteger('person_id');
+            $table->string('type');
             $table->timestamps();
         });
     }
