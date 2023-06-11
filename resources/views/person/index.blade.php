@@ -26,6 +26,30 @@
             border: 1px solid black;
 
         }
+
+        .header{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 10px;
+        }
+        .form1{
+            border-bottom: 1px solid gray;
+            margin-bottom: 10px;
+        }
+        .select,.input{
+            width: 190px;
+            padding: 5px;
+            margin-right: 60px;
+            align-items: center;
+            border: none;
+        }
+        .toster{
+            position: fixed;
+            top: 0;
+            right: 0;
+        }
      
     </style>
   </head>
@@ -34,19 +58,29 @@
         
         <div class="row ">
             <div class="col-8 mt-5">
-                <div class="add-person">
-                    <h4>Add New Person</h4>
-                    <form action="{{route('addperson')}}" method="post" class="d-flex">
-                        @csrf
-                        <input type="text"  name="name" class="item-input form-control" placeholder="Enter Name">
-                        <input type="email"  name="email" class="item-input form-control" placeholder="Enter Email">
-                        <button class="button" type="submit">Submit</button>
-                    </form> 
-                </div>
+               
 
                 <div class="card">
                     <div class="card-header">
-                        <h4>All Person List</h4>
+                        <div class="header">
+                            <h4>All Person List</h4>
+                            @if(Session::has('success'))
+                                <div class="toster"><p class="alert alert-info">{{ Session::get('success') }}</p></div>
+                            @endif
+                            <div class="form">
+                                <form action="{{route('persons.download')}}" method="POST" class="form1" >
+                                    @csrf
+                                    
+                                    <button type="submit" class="btn btn-info btn-sm">Download</button>
+                                </form>
+                                
+                                <form action="{{route('persons.upload')}}" method="POST" class="form2" enctype="multipart/form-data">
+                                    @csrf
+                                    <input type="file" name="file">
+                                    <button  type="submit" class="btn-info btn-sm">Upload</button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                     <div class="card-body">
                         <table class="table table-bordered">
@@ -54,7 +88,6 @@
                                 <th>sl</th>
                                 <th>Name</th>
                                 <th>Email</th>
-                                <th>Phone</th>
                                 <th>Action</th>
                             </tr>
                             @foreach ($persons as $person)
@@ -62,14 +95,7 @@
                                     <td>{{$loop->index+1}}</td>
                                     <td>{{$person->name}}</td>
                                     <td>{{$person->email}}</td>
-                                    <td>
-                                        @php
-                                            
-                                            foreach($person->phonebook as $phonebook) {
-                                                echo "<span>$phonebook->type</span></span>$phonebook->phone</span>".'<br>';
-                                            }
-                                        @endphp
-                                    </td> 
+                                   
                                     <td><a  href="{{route('deleteperson',$person->id)}}" class="btn btn-sm btn-danger">Delete</a></td>
                                 </tr>
                             @endforeach

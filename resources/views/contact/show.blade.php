@@ -9,6 +9,30 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <title>Phonebook</title>
     <style>
+        .card-header{
+            display: flex;
+            justify-content: space-between;
+            margin-top: 50px;
+        }
+        .type-button{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            
+
+        }
+        .select{
+            width: 190px;
+            padding: 5px;
+            margin-right: 10px;
+            align-items: center;
+            border: none;
+            
+            
+        }
+        .select:focus{
+            border: none;
+        }
         a{
             text-decoration: none;
         }
@@ -90,7 +114,21 @@
         <div class="row ">
             <div class="col-md-6">
                 <div class="car d">
-                    <div class="card-header">Contact List</div>
+                    <div class="card-header">
+                        <h3>Contact List</h3>
+                        <form action="{{route('contacts.download')}}" method="POST" >
+                            @csrf
+                            <div class="type-button">
+                                <select class="select text-muted" name="type" id="" >
+                                    <option disabled selected>Filter</option>
+                                    <option value="Home">Home</option>
+                                    <option value="Office">Office</option>
+                                    <option value="Personal">Personal</option>
+                                </select>
+                                <button class="btn btn-info btn-sm">Download</button>
+                            </div>
+                        </form>
+                    </div>
                     @if(Session::has('success'))
                         <div class="toster"><p class="alert alert-info">{{ Session::get('success') }}</p></div>
                     @endif

@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Services\Personservices;
 use App\Services\Phonebookservices;
 use DB;
+use App\Exports\ContactsExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ContactController extends Controller
 {   
@@ -119,4 +121,11 @@ class ContactController extends Controller
 
         return redirect()->route('showcontact')->with('success','Successfully Updated');
     }
+
+    public function export(Request $request)
+    {
+        return Excel::download(new ContactsExport($request->type), 'contactlist.xlsx');
+    }
+
+
 }

@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Services\Phonebookservices;
 use App\Services\Personservices;
+use App\Exports\PhonebookExport;
+use App\Imports\PhonebookImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 
 class PhonebookController extends Controller
@@ -58,6 +61,18 @@ class PhonebookController extends Controller
             return false;
         }
         
+    }
+
+    public function export(Request $request)
+    {
+        return Excel::download(new PhonebookExport($request->type), 'phonebooklist.xlsx');
+    }
+
+    public function import(Request $request)
+    {
+        Excel::import(new PhonebookImport, $request->file('file'));
+
+        return redirect('phonebooklist')->with('success','Successfully Imported');
     }
 
 }

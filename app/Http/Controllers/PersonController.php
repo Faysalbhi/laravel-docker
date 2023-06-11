@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\Personservices;
+use App\Exports\PersonsExport;
+use App\Imports\PersonsImport;
+use Maatwebsite\Excel\Facades\Excel;
+
 
 class PersonController extends Controller
 {
@@ -43,6 +47,18 @@ class PersonController extends Controller
     {
         $result = $this->personservice->deletePerson($id);
         return back();
+    }
+
+    public function export(Request $request)
+    {
+        return Excel::download(new PersonsExport, 'persons.xlsx');
+    }
+
+    public function import(Request $request)
+    {
+        Excel::import(new PersonsImport, $request->file('file'));
+
+        return redirect('personlist')->with('success','Successfully Imported');
     }
 
 }

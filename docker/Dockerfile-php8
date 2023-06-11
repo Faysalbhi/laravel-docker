@@ -1,12 +1,23 @@
 FROM php:8.2.3-fpm
 
-RUN apt-get update \
-    && apt install -y nginx git curl zip unzip ssh libzip-dev autoconf pkg-config libssl-dev 
+RUN apt-get update && apt-get install -y \
+    nginx \
+    git \
+    curl \
+    zip \
+    unzip \
+    ssh \
+    libzip-dev \
+    autoconf \
+    pkg-config \
+    libssl-dev \
+    libgd3 \
+    libpng-dev
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
 
 RUN docker-php-ext-install sockets
-RUN docker-php-ext-install pdo_mysql zip exif pcntl
+RUN docker-php-ext-install pdo_mysql zip exif pcntl gd
 
 RUN apt-get clean \
     && rm -rf /var/lib/apt/lists/*
