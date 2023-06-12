@@ -19,6 +19,12 @@ class ContactsExport implements FromCollection
         $this->type=$type;
     }
 
+    public function headings(): array {
+        return [
+            "ID","Name","Email","Phone","Type"
+        ];
+    }
+
 
     public function collection()
     {

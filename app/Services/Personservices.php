@@ -25,6 +25,8 @@ class Personservices {
         }
     }
 
+    
+
     public function addPerson($data)
     {
         try{

@@ -7,6 +7,7 @@ use App\Services\Personservices;
 use App\Services\Phonebookservices;
 use DB;
 use App\Exports\ContactsExport;
+use App\Exports\MultipleFilterContactExport;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ContactController extends Controller
@@ -122,10 +123,89 @@ class ContactController extends Controller
         return redirect()->route('showcontact')->with('success','Successfully Updated');
     }
 
+    // export Contact 
+
     public function export(Request $request)
     {
         return Excel::download(new ContactsExport($request->type), 'contactlist.xlsx');
     }
 
+
+
+
+
+    // filter Contact 
+
+    public function filterView(Request $request)
+    {   
+        // dd($request->all());
+        $personlist = $this->personservice->personList();
+        $phonebooklist = $this->phonebookservice->phonebookList();
+        return view('filtercontact.singlefilter',[
+            'personlist'=>$personlist,
+            'phonebooklist'=>$phonebooklist,
+        ]);
+    }
+    
+   
+
+    public function filterShow(Request $request, $type)
+    {
+        $phonebooklist = $this->phonebookservice->phonebookList($type);
+        $filterType=basename(request()->path());
+
+        return view('filtercontact.singlefilter_show',[
+            'phonebooklist'=>$phonebooklist,
+            'filterType'=>$filterType
+        ]);
+    }
+
+    public function filterExport(Request $request)
+    {
+        return Excel::download(new ContactsExport($request->type), 'contactlist.xlsx');
+    }
+
+    public function multiFilterView(Request $request)
+    {   
+        $data=$request->all();
+        if (!isset($data['type'])) {
+
+            $data['type'] = ['Home','Personal',"Office"];
+        }
+
+
+       
+        $personlist = $this->personservice->personList();
+
+
+
+        if(isset($data['excel']) && $data['excel']==1){
+            return Excel::download(new MultipleFilterContactExport($data,$personlist), 'multifilter_contactlist.xlsx');
+        }
+
+
+        return view('filtercontact.multifilter',[
+            'personlist'=>$personlist,
+            'data' => $data,
+            // 'phonebooklist'=>$phonebooklist,
+        ]);
+    }
+
+    public function multiFilterShow(Request $request)
+    {
+        $phonebooklist = $this->phonebookservice->phonebookListByArray($request->type);
+
+        return view('filtercontact.multifilter_show',[
+            'phonebooklist'=>$phonebooklist,
+            'filterType'=>$request->type
+        ]);
+
+    }
+
+    public function multifilterExport($filterType)
+    {
+        // return Excel::download(new MultipleFilterContactExport($request->data), 'multifilter_contactlist.xlsx');
+        dd($filterType);
+    }
 
 }

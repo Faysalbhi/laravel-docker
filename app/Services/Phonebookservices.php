@@ -7,18 +7,41 @@ use DB;
 
 class Phonebookservices {
 
-    public function phonebookList()
+    public function phonebookList($data=[])
     {
         try{
+            $query = Phonebook::query();
 
-            $result = Phonebook::all();
-            if ($result) {
-                return $result;
-
-            } else {
-                return "Can't face data";
+            if (isset($data['type'])){
+                $query->whereIn('type', $data['type']);
             }
 
+            if (isset($data['person_id'])){
+                $query->whereIn('person_id', $data['person_id']);
+            }
+            
+            return $query->get();
+
+        }catch(\Exception $e){
+            \Log::info($e->getMessage());
+            echo "<h3 style='text-align:center;color:red'>Something went wrong.Please Contact with Developer</h3>";
+        }
+    }
+
+    public function phonebookListByArray($data)
+    {
+        try{
+            $query = Phonebook::query();
+
+            if (isset($data['type'])){
+                $query->whereIn('type', $data['type']);
+            }
+
+            if (isset($data['person_id'])){
+                $query->whereIn('person_id', $data['person_id']);
+            }
+
+            return $query->get();
         }catch(\Exception $e){
             \Log::info($e->getMessage());
             echo "<h3 style='text-align:center;color:red'>Something went wrong.Please Contact with Developer</h3>";
