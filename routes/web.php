@@ -39,7 +39,5 @@ Route::post('contacts/download',[ContactController::class,'export'])->name('cont
 Route::get('filtercontact',[ContactController::class,'filterView'])->name('filtercontact');
 Route::get('filtercontact/{type}',[ContactController::class,'filterShow'])->name('filtercontact');
 Route::post('filter/download',[ContactController::class,'filterExport'])->name('filter.download');
-Route::get('multiFilterContact',[ContactController::class,'multiFilterView'])->name('multi.filterContact');
-Route::post('multiFilter/Contact/show',[ContactController::class,'multiFilterShow'])->name('multiFilter.Contact.Show');
-Route::post('multiFilter/download/{filter_type}',[ContactController::class,'multifilterExport'])->name('multi.filter.download');
+Route::get('multiFilterContact',[ContactController::class,'multiFilter'])->name('multi.filterContact');
 

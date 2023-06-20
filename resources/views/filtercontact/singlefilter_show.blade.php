@@ -172,6 +172,7 @@
                 <div class="car d">
                     <div class="card-header">
                         <h3>Contact List</h3>
+                        
                         <div class="dropdown">
                             <button onclick="filterShow()" class="dropbtn">Filter with...<i class="fa fa-filter" aria-hidden="true"></i></button>
                             <div id="filterItems" class="dropdown-content">
@@ -181,6 +182,7 @@
                               <a href="{{route('filtercontact','Home')}}">Home</a>
                             </div>
                         </div>
+                       
                         <form action="{{route('filter.download')}}" method="POST" >
                             @csrf
                             <div class="type-button">
@@ -195,6 +197,7 @@
                     <div class="card-body">
 
                         @foreach($phonebooklist as $key=>$phonebook)
+                            
                             <div class="contact">
                                 <div class="person-details" onclick="showNumber('phone-{{$key}}')">
                                     <p><span>{{$phonebook->person->name}}</span></p>

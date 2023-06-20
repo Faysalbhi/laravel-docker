@@ -138,21 +138,25 @@ class ContactController extends Controller
 
     public function filterView(Request $request)
     {   
-        // dd($request->all());
+        
+
         $personlist = $this->personservice->personList();
-        $phonebooklist = $this->phonebookservice->phonebookList();
         return view('filtercontact.singlefilter',[
             'personlist'=>$personlist,
-            'phonebooklist'=>$phonebooklist,
         ]);
+
+
     }
     
    
 
     public function filterShow(Request $request, $type)
     {
-        $phonebooklist = $this->phonebookservice->phonebookList($type);
         $filterType=basename(request()->path());
+        $data=$request->all();
+        $data['type']=[$filterType];
+
+        $phonebooklist = $this->phonebookservice->phonebookList($data);
 
         return view('filtercontact.singlefilter_show',[
             'phonebooklist'=>$phonebooklist,
@@ -165,19 +169,16 @@ class ContactController extends Controller
         return Excel::download(new ContactsExport($request->type), 'contactlist.xlsx');
     }
 
-    public function multiFilterView(Request $request)
+    public function multiFilter(Request $request)
     {   
         $data=$request->all();
         if (!isset($data['type'])) {
 
             $data['type'] = ['Home','Personal',"Office"];
         }
-
-
        
         $personlist = $this->personservice->personList();
-
-
+        $phonebooklist = $this->phonebookservice->phonebookList();
 
         if(isset($data['excel']) && $data['excel']==1){
             return Excel::download(new MultipleFilterContactExport($data,$personlist), 'multifilter_contactlist.xlsx');
@@ -187,25 +188,9 @@ class ContactController extends Controller
         return view('filtercontact.multifilter',[
             'personlist'=>$personlist,
             'data' => $data,
-            // 'phonebooklist'=>$phonebooklist,
         ]);
     }
 
-    public function multiFilterShow(Request $request)
-    {
-        $phonebooklist = $this->phonebookservice->phonebookListByArray($request->type);
 
-        return view('filtercontact.multifilter_show',[
-            'phonebooklist'=>$phonebooklist,
-            'filterType'=>$request->type
-        ]);
-
-    }
-
-    public function multifilterExport($filterType)
-    {
-        // return Excel::download(new MultipleFilterContactExport($request->data), 'multifilter_contactlist.xlsx');
-        dd($filterType);
-    }
 
 }

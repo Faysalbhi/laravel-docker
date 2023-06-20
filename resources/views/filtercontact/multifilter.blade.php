@@ -207,6 +207,11 @@
                     <div class="card-body">
 
                         @foreach($personlist as $key=>$person)
+                            @php 
+                            if (!$person->phonebook->count()){
+                                    continue;
+                            }
+                            @endphp
                             <div class="contact">
                                 <div class="person-details" onclick="showNumber('phone-{{$key}}')">
                                     <p><span>{{$person->name}}</span></p>
