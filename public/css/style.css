@@ -1,0 +1,80 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 16px;
+}
+p{
+    padding: 20px;
+    /* background-color: azure; */
+    color: white;
+}
+.company-name{
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 24px;
+}
+
+.header-section{
+    display: flex;
+    min-width: 90vh;
+    margin: auto;
+    height: 40px;
+    padding: 20px;
+    background: rgb(23, 20, 20);
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+    position: sticky;
+    top: 0;
+    color: aliceblue;
+}
+
+
+.menu{
+    display: flex;
+    justify-content: space-around;
+    
+
+
+}
+.menu li {
+    list-style-type: none;
+    padding: 20px;
+    
+    
+
+}
+.menu li a{
+    text-decoration: none;
+    font-size: 20px;
+    color: aliceblue;
+    text-transform: uppercase;
+    font-family: 'Courier New', Courier, monospace;
+    border-top: 1px solid darkgrey;
+}
+
+
+
+.content-section{
+    display: flex;
+    margin: 5px;
+    padding: 5px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+}
+
+.footer-section{
+
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+}
+.content-wraper{
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+.hack{
+    display: flex;
+    justify-content: space-evenly;
+
+}

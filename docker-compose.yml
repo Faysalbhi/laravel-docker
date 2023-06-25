@@ -21,6 +21,7 @@ services:
       - "laravel-docker.com:${HOST_IP}"
     networks:
       - laravel-docker-network
+  
 
   #Nginx Service
   nginx:

@@ -68,13 +68,13 @@
                                 <div class="toster"><p class="alert alert-info">{{ Session::get('success') }}</p></div>
                             @endif
                             <div class="form">
-                                <form action="{{route('persons.download')}}" method="POST" class="form1" >
+                                <form action="" method="POST" class="form1" >
                                     @csrf
                                     
                                     <button type="submit" class="btn btn-info btn-sm">Download</button>
                                 </form>
                                 
-                                <form action="{{route('persons.upload')}}" method="POST" class="form2" enctype="multipart/form-data">
+                                <form action="" method="POST" class="form2" enctype="multipart/form-data">
                                     @csrf
                                     <input type="file" name="file">
                                     <button  type="submit" class="btn-info btn-sm">Upload</button>
@@ -96,7 +96,16 @@
                                     <td>{{$person->name}}</td>
                                     <td>{{$person->email}}</td>
                                    
-                                    <td><a  href="{{route('deleteperson',$person->id)}}" class="btn btn-sm btn-danger">Delete</a></td>
+                                    <td>
+                                        <form action="{{route('persons.destroy',$person->id)}}" onsubmit="return confirm('Are You sure? you want to delete this Permanently..')" method="POST">
+                                            @method('DELETE')
+                                            @csrf
+                                        
+                                            <button  type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                        </form>
+                                        
+                                    
+                                    </td>
                                 </tr>
                             @endforeach
 

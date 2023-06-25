@@ -13,6 +13,8 @@ RUN apt-get update && apt-get install -y \
     libssl-dev \
     libgd3 \
     libpng-dev
+    
+RUN apt-get install -y nodejs npm
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
 

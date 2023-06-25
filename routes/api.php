@@ -2,6 +2,10 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\PersonController;
+use App\Http\Controllers\Api\PhonebookController;
+use App\Http\Controllers\Api\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,3 +22,25 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
  
+
+// public route 
+Route::post('/login',[AuthController::class,'login']);
+Route::post('/register',[AuthController::class,'register']);
+
+
+// protected route by auth:sactum 
+
+
+Route::group(['middleware'=>'auth:sanctum'], function(){
+
+    Route::post('/logout',[AuthController::class,'logout']);
+    Route::apiResource('/persons',PersonController::class);
+    
+});
+
+
+
+Route::group(['middleware'=>'auth:sanctum','prefix'=>'person'], function(){
+
+    Route::apiResource('/phonebooks',PhonebookController::class);
+});

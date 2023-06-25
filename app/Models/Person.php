@@ -9,10 +9,11 @@ use App\Models\Phonebook;
 class Person extends Model
 {
     use HasFactory;
+    protected $table="people";
     protected $guarded=['id'];
 
-    public function phonebook()
+    public function phonebooks()
     {
-        return $this->hasMany(Phonebook::class,'person_id');
+        return $this->hasMany(Phonebook::class);
     }
 }

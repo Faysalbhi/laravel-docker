@@ -1,43 +1,39 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PhonebookController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PersonController;
-use App\Http\Controllers\ContactController;
+use App\Http\Controllers\PhonebookController;
+
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "web" middleware group. Make something great!
+|
+*/
 
 Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
-// Phone Book Route 
-Route::get('phonebooklist',[PhonebookController::class,'index']);
-Route::post('addphonebook',[PhonebookController::class,'insert'])->name('addphonebook');
-Route::get('deletephonebook/{id}',[PhonebookController::class,'delete'])->name('deletephonebook');
-Route::get('updatephonebook/{id}/{phone}',[PhonebookController::class,'update']);
-Route::post('phonebook/download',[PhonebookController::class,'export'])->name('phonebook.download');
-Route::post('phonebook/upload',[PhonebookController::class,'import'])->name('phonebook.upload');
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
 
-// Person Route 
-Route::get('personlist',[PersonController::class,'index']);
-Route::post('addperson',[PersonController::class,'insert'])->name('addperson');
-Route::get('deleteperson/{id}',[PersonController::class,'delete'])->name('deleteperson');
-Route::post('persons/download',[PersonController::class,'export'])->name('persons.download');
-Route::post('persons/upload',[PersonController::class,'import'])->name('persons.upload');
+require __DIR__.'/auth.php';
 
-// Contact Route 
-Route::get('addcontact',[ContactController::class,'index'])->name('add.contact');
-Route::get('showcontact',[ContactController::class,'show'])->name('showcontact');
-Route::post('contact/store',[ContactController::class,'store'])->name('contact.store');
-Route::get('contact/delete/{id}',[ContactController::class,'delete'])->name('contact.delete');
-Route::get('contact/edit/{id}',[ContactController::class,'edit'])->name('contact.edit');
-Route::post('contact/update/{id}',[ContactController::class,'update'])->name('contact.update');
-Route::post('contacts/download',[ContactController::class,'export'])->name('contacts.download');
-
-
-// filter Contact Route 
-Route::get('filtercontact',[ContactController::class,'filterView'])->name('filtercontact');
-Route::get('filtercontact/{type}',[ContactController::class,'filterShow'])->name('filtercontact');
-Route::post('filter/download',[ContactController::class,'filterExport'])->name('filter.download');
-Route::get('multiFilterContact',[ContactController::class,'multiFilter'])->name('multi.filterContact');
-
+Route::resource('/persons',PersonController::class);
+Route::get('/persons/download',[PersonController::class,'donwloadExcel'])->name('persons.download');
+Route::get('/persons/upload',[PersonController::class,'uploadExcel'])->name('persons.upload');

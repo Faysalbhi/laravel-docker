@@ -7,6 +7,7 @@ use App\Services\Personservices;
 use App\Exports\PersonsExport;
 use App\Imports\PersonsImport;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Models\Person;
 
 
 class PersonController extends Controller
@@ -29,23 +30,23 @@ class PersonController extends Controller
     }
 
 
-    public function insert(Request $request)
+    public function store(Request $request)
     {
-        $insertid = $this->personservice->addPerson($request);
-        return back()->with('insertid',$insertid);
+        $person = $this->personservice->addPerson($request);
+        return back()->with('person',$person);
     }
     
 
-    public function update($id,$phone)
+    public function update(PersonRequest $request,Person $person)
     {
-        $result = $this->phonebookservice->updatePhonebook($id,$phone);
+        $result = $this->phonebookservice->updatePhonebook($request,$phone);
         return back();
     }
 
 
-    public function delete($id)
+    public function destroy(Person $person)
     {
-        $result = $this->personservice->deletePerson($id);
+        $result = $this->personservice->deletePerson($person);
         return back();
     }
 

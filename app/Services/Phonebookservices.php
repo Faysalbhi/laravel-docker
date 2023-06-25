@@ -17,59 +17,33 @@ class Phonebookservices {
             }
 
             if (isset($data['person_id'])){
-                $query->whereIn('person_id', $data['person_id']);
+                $query->where('person_id', $data['person_id']);
             }
-            
-            return $query->get();
+            return  $query->get();
 
         }catch(\Exception $e){
             \Log::info($e->getMessage());
-            echo "<h3 style='text-align:center;color:red'>Something went wrong.Please Contact with Developer</h3>";
+            return "Something went wrong.Please Contact with Developer";
         }
     }
 
-    public function phonebookListByArray($data)
-    {
-        try{
-            $query = Phonebook::query();
-
-            if (isset($data['type'])){
-                $query->whereIn('type', $data['type']);
-            }
-
-            if (isset($data['person_id'])){
-                $query->whereIn('person_id', $data['person_id']);
-            }
-
-            return $query->get();
-        }catch(\Exception $e){
-            \Log::info($e->getMessage());
-            echo "<h3 style='text-align:center;color:red'>Something went wrong.Please Contact with Developer</h3>";
-        }
-    }
+   
 
     public function addPhonebook($data)
     {
         try{
-            
-            $result = Phonebook::insertGetId([
-                'phone'=>$data->phone,
-                'person_id'=>$data->person_id,
-                'type'=>$data->type
-            ]);
+            $phonebook = new Phonebook;
+            $phonebook->phone = $data->phone;
+            $phonebook->person_id = $data->person_id;
+            $phonebook->type = $data->type;
+            $phonebook->save();
 
-            if ($result) {
-                return "success";
-
-            } else {
-                return "fail";
-            }
-
+            return $phonebook;
+         
         }catch(\Exception $e){
             DB::rollback();
             \Log::info("Error Whene Phonebook trying to insert: ".$e->getMessage());
-            echo "<h3 style='text-align:center;color:red'>Something went wrong.Please Contact with Developer</h3>";
-            return "faild";
+            return "Something went wrong.Please Contact with Developer";
         }
     }
 

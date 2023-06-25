@@ -16,7 +16,7 @@ class Personservices {
                 return $result;
 
             } else {
-                return "Can't face data";
+                return null;
             }
 
         }catch(\Exception $e){
@@ -31,17 +31,14 @@ class Personservices {
     {
         try{
             
-            $result = Person::insertGetId([
-                'name'=>$data->name,
-                'email'=>$data->email,
-            ]);
+            
+            $person = new Person;
+            $person->name = $data->name;
+            $person->email = $data->email;
+            $person->save();
 
-            if ($result) {
-                return $result;
+            return $person;
 
-            } else {
-                return "fail";
-            }
 
         }catch(\Exception $e){
             \Log::info("Error Whene Phonebook trying to insert: ".$e->getMessage());
@@ -57,22 +54,15 @@ class Personservices {
         return $person;
     }
 
-    public function updatePerson($id,$data)
+    public function updatePerson($data,$person)
     {
 
         try{
-
-            $result=Person::where('id',$id)->update([
-                'name'=>$data->name,
-                'email'=>$data->email,
-            ]);
-
-            if ($result) {
-                return "success";
-
-            } else {
-                return "fail";
-            }
+            $person->name = $data->name;
+            $person->email = $data->email;
+            $person->save();
+            return $person;
+            
 
         }catch(\Exception $e){
             \Log::info("Error Whene Phonebook trying to update: ".$e->getMessage());
@@ -82,20 +72,13 @@ class Personservices {
 
 
 
-    public function deletePerson($id)
+    public function deletePerson($person)
     {
         
         try{
             
-            $result=Person::where('id',$id)->delete();
-
-            if ($result) {
-                return "success";
-
-            } else {
-                abort(404,'page not found');
-                return "fail";
-            }
+            $person = $person->delete();
+            return $person;
             
         }catch(\Exception $e){
             \Log::info("Error Whene Phonebook trying to Delete: ".$e->getMessage());
